@@ -19,101 +19,107 @@ static void log_fatal_errno(const char* message) {
 	log_fatal(message, strerror(errno));
 }
 
+struct State {
+	FILE* in;
+	int fd;
+	off_t offset;
+	char* cur;
+	const char* end;
+	int ch;
+	char buffer[4096];
+};
 
 // -- POSIX Ein-/Ausgabe --
 
-static int fd = -1;
-
-static char buffer[4096];
-static char* cur = buffer;
-static const char* end = buffer + sizeof(buffer);
-
-static inline int read_char(void) {
-	if (! end) { return EOF; }
-	if (cur >= end) {
-		off_t got = read(fd, buffer, sizeof(buffer));
+static inline int read_char(struct State* state) {
+	if (! state->end) { return EOF; }
+	if (state->cur >= state->end) {
+		off_t got = read(state->fd, state->buffer, sizeof(state->buffer));
 		if (got > 0) {
-			cur = buffer;
-			end = cur + got;
+			state->cur = state->buffer;
+			state->end = state->cur + got;
 		} else {
 			if (got < 0) { log_fatal_errno("Kann nicht lesen"); }
-			end = NULL;
+			state->end = NULL;
 			return EOF;
 		}
 	}
-	return *cur++;
+	return *state->cur++;
 }
-
-static void write_buffer(void) {
-	off_t size = cur - buffer;
-	if (size > 0) {
-		off_t got = write(fd, buffer, size);
-		if (got != size) { log_fatal_errno("Kann nicht schreiben"); }
-	}
-	cur = buffer;
-}
-
-static inline void write_char(int ch) {
-	if (cur >= end) { write_buffer(); }
-	*cur++ = ch;
-}
-
 
 // -- Eingabe ignorieren, solange sie passt --
 
-static int got = ' ';
-
-static inline off_t match_prefix(void) {
-	off_t offset = 0;
-	end = cur = buffer;
+static inline void match_prefix(struct State* state) {
+	state->end = state->cur = state->buffer;
 
 	for (;;) {
-		got = getchar();
-		if (got == EOF) { break; }
-		int should = read_char();
-		if (should != got) { break; }
-		++offset;
+		state->ch = fgetc(state->in);
+		if (state->ch == EOF) { break; }
+		int should = read_char(state);
+		if (should != state->ch) { break; }
+		++state->offset;
 	}
-	return offset;
 }
 
 
 // -- Rest der Ausgabe in Datei schreiben --
 
-static inline off_t overwrite_rest(off_t offset) {
-	cur = buffer; end = buffer + sizeof(buffer);
-	off_t pos = lseek(fd, offset, SEEK_SET);
-	if (pos != offset) { log_fatal_errno("Kann Cursor nicht neu setzen"); }
-	for (;;) {
-		if (got == EOF) { break; }
-		write_char(got);
-		++offset;
-		got = getchar();
+static void write_buffer(struct State* state) {
+	off_t size = state->cur - state->buffer;
+	if (size > 0) {
+		off_t written = write(state->fd, state->buffer, size);
+		if (written != size) { log_fatal_errno("Kann nicht schreiben"); }
 	}
-	write_buffer();
-	return offset;
+	state->cur = state->buffer;
+}
+
+static inline void write_char(struct State* state) {
+	if (state->cur >= state->end) { write_buffer(state); }
+	*state->cur++ = state->ch;
+	++state->offset;
+}
+
+
+static inline void overwrite_rest(struct State* state) {
+	state->cur = state->buffer;
+	state->end = state->buffer + sizeof(state->buffer);
+	off_t pos = lseek(state->fd, state->offset, SEEK_SET);
+	if (pos != state->offset) {
+		log_fatal_errno("Kann Cursor nicht neu setzen");
+	}
+	for (;;) {
+		if (state->ch == EOF) { break; }
+		write_char(state);
+		state->ch = fgetc(state->in);
+	}
+	write_buffer(state);
 }
 
 
 // -- Dateigröße auf geschriebene Daten reduzieren --
 
-static inline void truncate_file(off_t length) {
-	off_t s = lseek(fd, 0, SEEK_END);
-	if (s < 0) { log_fatal_errno("Kann Dateiende nicht ermitteln"); }
-	if (s != length) {
-		if (ftruncate(fd, length) < 0) {
+static inline void truncate_file(const struct State* state) {
+	off_t size = lseek(state->fd, 0, SEEK_END);
+	if (size < 0) { log_fatal_errno("Kann Dateiende nicht ermitteln"); }
+	if (size != state->offset) {
+		if (ftruncate(state->fd, state->offset) < 0) {
 			log_fatal_errno("Kann Dateigröße nicht anpassen");
 		}
 	}
 }
 
 void process_lazy(FILE* in, const char* out) {
-	fd  = open(out, O_RDWR | O_CREAT, 0660);
-	if (fd < 0) { log_fatal_errno("Kann Datei nicht öffnen"); }
-	off_t offset = match_prefix();
-	if (got != EOF) {
-		offset = overwrite_rest(offset);
+	if (! in || ! out) { log_fatal("invalid arguments", "process_lazy"); }
+
+	struct State state;
+	state.fd  = open(out, O_RDWR | O_CREAT, 0660);
+	if (state.fd < 0) { log_fatal_errno("Kann Datei nicht öffnen"); }
+	state.in = in;
+	state.offset = 0;
+	match_prefix(&state);
+	if (state.ch != EOF) {
+		overwrite_rest(&state);
 	}
-	truncate_file(offset);
-	close(fd);
+	truncate_file(&state);
+	close(state.fd);
 }
