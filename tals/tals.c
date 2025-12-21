@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include "log/log.h"
 
 int ch;
 
@@ -14,9 +14,7 @@ bool match(const char* p) {
 }
 
 void list_file(void) {
-	if (! match("file ")) {
-		fprintf(stderr, "Datei in ta-Archiv erwartet\n"); exit(10);
-	}
+	if (! match("file ")) { log_fatal("kein ta-Archiv", "Datei-Präfix"); }
 
 	while (ch != EOF && ch != '\n') {
 		putchar(ch); ch = getchar();
@@ -46,9 +44,10 @@ void list_file(void) {
 
 int main(void) {
 	ch = getchar(); if (ch == EOF) { return 0; }
-	if (ch != '%') { fprintf(stderr, "Kein ta-Archiv\n"); exit(10); }
+	if (ch != '%') { log_fatal("Kein ta-Archiv", "Header"); }
 	ch = getchar();
 	do {
 		list_file();
 	} while (ch != EOF);
+	if (ferror(stdin)) { log_fatal_errno("Kann nicht lesen"); }
 }
