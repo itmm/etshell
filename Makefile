@@ -1,5 +1,5 @@
 PROJECTS := lazy tac tals
-CLEAN_TARGETS := $(addsuffix .clean, $(PROJECTS))
+CLEAN_TARGETS := $(addsuffix .clean,$(PROJECTS))
 
 .PHONY: all clean $(PROJECTS)
 
