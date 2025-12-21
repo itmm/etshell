@@ -1,6 +1,6 @@
-.PHONY: all test clean sub_test sub_test_clean lib
+.PHONY: all test clean sub_test sub_test_clean lib log_lib
 
-CFLAGS += -std=c17 -O3 -Wall -pedantic -Werror
+CFLAGS += -std=c17 -O3 -Wall -pedantic -Werror -I..
 
 all: test
 
@@ -10,3 +10,5 @@ sub_test:
 sub_test_clean:
 	@$(MAKE) --directory=tests clean
 
+log_lib:
+	@$(MAKE) --directory=../log liblog.a

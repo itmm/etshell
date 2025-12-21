@@ -1,23 +1,8 @@
-#include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 #include "lazy.h"
-
-// -- Logging --
-
-static void log_fatal(const char* message, const char* reason) {
-	if (! message) { message = "NULL"; }
-	if (! reason) { reason = "NULL"; }
-	fprintf(stderr, "%s: %s\n", message, reason);
-	exit(10);
-}
-
-static void log_fatal_errno(const char* message) {
-	log_fatal(message, strerror(errno));
-}
+#include "log/log.h"
 
 struct State {
 	FILE* in;

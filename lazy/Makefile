@@ -6,9 +6,11 @@ liblazy.a: lazy.o
 	@echo building $@
 	@$(AR) -rc $@ $^
 
-lazy: main.o liblazy.a
+main.o: lazy.h ../log/log.h
+
+lazy: main.o liblazy.a log_lib
 	@echo building $@
-	@$(CC) $^ -o $@
+	@$(CC) main.o -L. -llazy -L../log -llog -o $@
 
 test: lazy
 	@$(MAKE) sub_test

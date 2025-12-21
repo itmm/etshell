@@ -1,4 +1,4 @@
-PROJECTS := lazy tac tals
+PROJECTS := log lazy tac tals
 CLEAN_TARGETS := $(addsuffix .clean,$(PROJECTS))
 
 .PHONY: all clean $(PROJECTS)
