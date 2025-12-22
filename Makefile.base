@@ -12,3 +12,6 @@ sub_test_clean:
 
 log_lib:
 	@$(MAKE) --directory=../log liblog.a
+
+csv_lib:
+	@$(MAKE) --directory=../csv libcsv.a
