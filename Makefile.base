@@ -2,11 +2,17 @@
 
 CFLAGS += -std=c17 -O3 -Wall -pedantic -Werror -I..
 
-all: test
+all: .mdp_run
+	@$(MAKE) test
+
+.mdp_run: $(wildcard *.md)
+	@echo extracting
+	@[ -x "$$(command -v mdp)" ] || echo "mdp not installed" 1>&2
+	@[ -x "$$(command -v mdp)" ] && mdp README.md
+	@date >$@
 
 sub_test:
 	@$(MAKE) --directory=tests
 
 sub_test_clean:
 	@$(MAKE) --directory=tests clean
-
