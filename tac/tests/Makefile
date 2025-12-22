@@ -33,12 +33,15 @@ test_empty:
 	@diff t e
 	@rm t e
 
-test: $(TESTS)
+test_empty_files:
 	@cat /dev/null > a
 	@../tac a a > t
 	@echo "%file a\n%file a" > e
 	@diff t e
 	@rm a t e
+
+test: $(TESTS)
+	@echo tested tac
 
 clean:
 	@rm -f t e

@@ -53,6 +53,7 @@ test_dont_modify_big:
 	@rm e
 
 test: $(TESTS)
+	@echo tested lazy
 
 clean:
 	@rm -f t e

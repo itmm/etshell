@@ -1,7 +1,7 @@
 PROJECTS := log lazy tac tals
 CLEAN_TARGETS := $(addsuffix .clean,$(PROJECTS))
 
-.PHONY: all clean $(PROJECTS)
+.PHONY: all clean $(PROJECTS) $(CLEAN_TARGETS)
 
 all: $(PROJECTS)
 
@@ -19,4 +19,3 @@ $(foreach prj,$(addsuffix :,$(PROJECTS)),$(eval $(call GEN_PRJ,$(prj))))
 $(foreach cln,$(addsuffix :,$(CLEAN_TARGETS)),$(eval $(call GEN_CLN,$(cln))))
 
 clean: $(CLEAN_TARGETS)
-

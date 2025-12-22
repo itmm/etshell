@@ -1,4 +1,9 @@
-# Gliederung
+# rtshell
+
+Dieses Projekt stellt einfache Werkzeuge vor, um im Linux- oder Mac-Terminal
+textuelle Daten gut zu verarbeiten. Aus diesen Werkzeugen können mithilfe von
+[make](https://www.gnu.org/software/make/) Abläufe definiert werden, die
+auch bei Abbrüchen Korrekturen und Weiterverarbeitung erlauben.
 
 * Problembeschreibung
 
