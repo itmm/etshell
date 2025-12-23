@@ -126,7 +126,7 @@ Und `Makefile.lib`:
 ../log/liblog.a: ../log/log.o
 	$(MAKE) --quiet --directory=../log liblog.a
 
-include Makefile.deps
+include ../log/Makefile.deps
 ```
 
 Und `Makefile.deps`:
