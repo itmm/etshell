@@ -1,16 +1,14 @@
-#line 34 "README.md"
+#line 75 "README.md"
 #include <fcntl.h>
-#include <stdio.h>
 #include <unistd.h>
-#include "lazy.h"
-#include "log/log.h"
+#line 57
+#include <stdio.h>
 
-#if _BSD_SOURCE || _XOPEN_SOURCE >= 500 || _XOPEN_VERSION >= 500 || \
-    _XOPEN_SOURCE && _XOPEN_SOURCE_EXTENDED || \
-    /* Since glibc 2.3.5: */ _POSIX_C_SOURCE >= 200112L
-#else
-	int ftruncate(int fd, long length);
-#endif
+#line 35
+#include "lazy.h"
+#line 79
+#include "log/log.h"
+#line 61
 
 struct State {
 	FILE* in;
@@ -21,6 +19,14 @@ struct State {
 	int ch;
 	char buffer[4096];
 };
+#line 84
+
+#if _BSD_SOURCE || _XOPEN_SOURCE >= 500 || _XOPEN_VERSION >= 500 || \
+    _XOPEN_SOURCE && _XOPEN_SOURCE_EXTENDED || \
+    /* Since glibc 2.3.5: */ _POSIX_C_SOURCE >= 200112L
+#else
+	int ftruncate(int fd, long length);
+#endif
 
 // -- POSIX Ein-/Ausgabe --
 
@@ -101,20 +107,39 @@ static inline void truncate_file(const struct State* state) {
 	}
 }
 
-void process_lazy(FILE* in, const char* out) {
-	if (! in || ! out) { log_fatal("invalid arguments", "process_lazy"); }
+#line 36
+#include "log/log.h"
 
+void process_lazy(FILE* in, const char* out) {
+#line 174
+    // open output
 	struct State state;
 	state.fd  = open(out, O_RDWR | O_CREAT, 0660);
 	if (state.fd < 0) { log_fatal_errno("Kann Datei nicht öffnen"); }
 	state.in = in;
 	state.offset = 0;
+#line 181
+    // match prefix
 	match_prefix(&state);
+#line 184
+    // write rest into file
 	if (state.ch != EOF) {
 		overwrite_rest(&state);
 	}
+#line 189
+    // trim file length
 	truncate_file(&state);
+#line 192
+    // close output
 	close(state.fd);
 
 	if (ferror(state.in)) { log_fatal_errno("Fehler beim Lesen"); }
+#line 39
+	if (! in || ! out) { log_fatal("invalid arguments", "process_lazy"); }
+
+    // open output
+    // match prefix
+    // write rest into file
+    // trim file length
+    // close output
 }

@@ -33,6 +33,7 @@ Aber dahinter verbergen sich in `lazy.c` mehrere Schritte:
 
 ```c
 #include "lazy.h"
+#include "log/log.h"
 
 void process_lazy(FILE* in, const char* out) {
 	if (! in || ! out) { log_fatal("invalid arguments", "process_lazy"); }
@@ -42,35 +43,21 @@ void process_lazy(FILE* in, const char* out) {
     // write rest into file
     // trim file length
     // close output
-	struct State state;
-	state.fd  = open(out, O_RDWR | O_CREAT, 0660);
-	if (state.fd < 0) { log_fatal_errno("Kann Datei nicht öffnen"); }
-	state.in = in;
-	state.offset = 0;
-	match_prefix(&state);
-	if (state.ch != EOF) {
-		overwrite_rest(&state);
-	}
-	truncate_file(&state);
-	close(state.fd);
-
-	if (ferror(state.in)) { log_fatal_errno("Fehler beim Lesen"); }
 }
 ```
 
-```c
-#include <fcntl.h>
-#include <stdio.h>
-#include <unistd.h>
-#include "lazy.h"
-#include "log/log.h"
 
-#if _BSD_SOURCE || _XOPEN_SOURCE >= 500 || _XOPEN_VERSION >= 500 || \
-    _XOPEN_SOURCE && _XOPEN_SOURCE_EXTENDED || \
-    /* Since glibc 2.3.5: */ _POSIX_C_SOURCE >= 200112L
-#else
-	int ftruncate(int fd, long length);
-#endif
+## Zustand
+
+Um reentrant zu bleiben, wird der aktuelle Zustand nicht in globalen
+Variablen abgelegt. Statt dessen gibt es eine lokale `struct`, welche den
+einzelnen Funktion mitgegeben wird.
+
+```c
+#include <stdio.h>
+
+// ...
+#include "lazy.h"
 
 struct State {
 	FILE* in;
@@ -81,6 +68,26 @@ struct State {
 	int ch;
 	char buffer[4096];
 };
+// ...
+```
+
+```c
+#include <fcntl.h>
+#include <unistd.h>
+// ...
+#include "lazy.h"
+#include "log/log.h"
+// ...
+struct State {
+// ...
+};
+
+#if _BSD_SOURCE || _XOPEN_SOURCE >= 500 || _XOPEN_VERSION >= 500 || \
+    _XOPEN_SOURCE && _XOPEN_SOURCE_EXTENDED || \
+    /* Since glibc 2.3.5: */ _POSIX_C_SOURCE >= 200112L
+#else
+	int ftruncate(int fd, long length);
+#endif
 
 // -- POSIX Ein-/Ausgabe --
 
@@ -161,21 +168,31 @@ static inline void truncate_file(const struct State* state) {
 	}
 }
 
+// ...
 void process_lazy(FILE* in, const char* out) {
-	if (! in || ! out) { log_fatal("invalid arguments", "process_lazy"); }
-
+    // ...
+    // open output
 	struct State state;
 	state.fd  = open(out, O_RDWR | O_CREAT, 0660);
 	if (state.fd < 0) { log_fatal_errno("Kann Datei nicht öffnen"); }
 	state.in = in;
 	state.offset = 0;
+    // ...
+    // match prefix
 	match_prefix(&state);
+    // ...
+    // write rest into file
 	if (state.ch != EOF) {
 		overwrite_rest(&state);
 	}
+    // ...
+    // trim file length
 	truncate_file(&state);
+    // ...
+    // close output
 	close(state.fd);
 
 	if (ferror(state.in)) { log_fatal_errno("Fehler beim Lesen"); }
+// ...
 }
 ```
