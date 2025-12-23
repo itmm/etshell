@@ -1,12 +1,12 @@
 include ../../Makefile.base
 
 TESTS := test_no_output \
-    test_change \
-    test_increase \
-    test_decrease \
-    test_truncate \
-    test_dont_modify \
-    test_dont_modify_big \
+	test_change \
+	test_increase \
+	test_decrease \
+	test_truncate \
+	test_dont_modify \
+	test_dont_modify_big \
 
 
 .PHONY: $(TESTS)

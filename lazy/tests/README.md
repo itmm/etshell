@@ -33,7 +33,7 @@ test_no_output:
 ```Makefile
 // ...
 TESTS := test_no_output \
-    test_change \
+	test_change \
 // ...
 test_change:
 	@echo "abc" > t
@@ -49,8 +49,8 @@ test_change:
 
 ```Makefile
 // ...
-    test_change \
-    test_increase \
+	test_change \
+	test_increase \
 // ...
 test_increase:
 	@echo "abc" > t
@@ -66,8 +66,8 @@ test_increase:
 
 ```Makefile
 // ...
-    test_increase \
-    test_decrease \
+	test_increase \
+	test_decrease \
 // ...
 test_decrease:
 	@echo "abcdef" > t
@@ -82,8 +82,8 @@ test_decrease:
 
 ```Makefile
 // ...
-    test_decrease \
-    test_truncate \
+	test_decrease \
+	test_truncate \
 // ...
 test_truncate:
 	@echo "abc" > t
@@ -98,8 +98,8 @@ test_truncate:
 
 ```Makefile
 // ...
-    test_truncate \
-    test_dont_modify \
+	test_truncate \
+	test_dont_modify \
 // ...
 test_dont_modify:
 	@cp old-file.txt e
@@ -113,14 +113,13 @@ test_dont_modify:
 
 ```Makefile
 // ...
-    test_dont_modify \
-    test_dont_modify_big \
+	test_dont_modify \
+	test_dont_modify_big \
 // ...
 test_dont_modify_big:
 	@cp old-big.txt e
 	@cat e | ../lazy old-big.txt
 	@[ old-big.txt -ot e ]
-    @echo xxx
 	@rm e
 
 ```
