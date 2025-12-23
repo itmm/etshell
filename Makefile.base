@@ -6,7 +6,6 @@ all: .mdp_run
 	@$(MAKE) test
 
 .mdp_run: $(wildcard *.md)
-	@echo extracting
 	@[ -x "$$(command -v mdp)" ] || echo "mdp not installed" 1>&2
 	@[ -x "$$(command -v mdp)" ] && mdp README.md
 	@date >$@
