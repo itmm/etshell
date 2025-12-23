@@ -77,7 +77,7 @@ herangezogen werden.
 
 Daher kommt eine weitere Funktion in `log.h` hinzu:
 
-```
+```c
 // ...
 	void log_fatal(const char* message, const char* reason);
 	void log_fatal_errno(const char* message);
@@ -86,15 +86,14 @@ Daher kommt eine weitere Funktion in `log.h` hinzu:
 
 In `log.c` kann diese hinzugezogen werden, um die Begründung zu liefern.
 
-```
+```c
 // ...
 
 #include <errno.h>
 // ...
 #include <stdlib.h>
 #include <string.h>
-
-// ...
+// ...2
 
 void log_fatal_errno(const char* message) {
 	log_fatal(message, strerror(errno));

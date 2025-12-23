@@ -1,3 +1,4 @@
 *.o
 liblazy.a
 lazy
+.mdp_run
