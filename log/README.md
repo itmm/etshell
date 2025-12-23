@@ -6,6 +6,7 @@ Die Programme loggen alle über die Standard-Fehlerausgabe. Das System, welches
 die Programme aufruft, muss sicherstellen, dass die Ausgabe in Dateien
 archiviert wird. Und ebenso, dass diese Dateien nicht zu groß werden.
 
+
 ## Basisfunktion
 
 Im Header `log.h` wird zunächst die Basisfunktion definiert, um eine einzige
@@ -100,27 +101,35 @@ void log_fatal_errno(const char* message) {
 }
 ```
 
-In `./Makefile`:
+
+## Programm bauen
+
+### Makefile
+
+Im `./Makefile` werden die Grundlagen gelegt, um
 
 ```Makefile
 include ../Makefile.base
 include Makefile.deps
-
-lib: ../log/liblog.a
 
 ../log/liblog.a: ../log/log.o
 	@echo building $@
 	@$(AR) -rc $@ $^
 
 test: ../log/liblog.a
-	@#$(MAKE) sub_test
 
 clean:
 	@rm -f liblog.a log.o
-	@#$(MAKE) sub_test_clean
 ```
 
-Und `Makefile.lib`:
+Es gibt ausnahmsweise keine Testfälle für das Loggen: da es ständig verwendet
+wird, kann es en passant mitgetestet werden.
+
+
+### Makefile.lib
+
+Ich baue eine statische Bibliothek. Um in anderen Makefiles diese zu verwenden,
+kann die Datei `Makefile.lib` eingebunden werden:
 
 ```Makefile
 ../log/liblog.a: ../log/log.o
@@ -129,7 +138,12 @@ Und `Makefile.lib`:
 include ../log/Makefile.deps
 ```
 
-Und `Makefile.deps`:
+
+### Makefile.deps
+
+In der Datei `Makefile.deps` werden die Abhängigkeiten verwaltet. Da diese
+sowohl vom `Makefile`, als auch in `Makefile.lib` verwendet wird, muss
+`Makefile.deps` die Pfade über das Modul-Verzeichnis auflösen.
 
 ```Makefile
 ../log/log.o: ../log/log.h

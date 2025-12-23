@@ -1,27 +1,27 @@
-#line 28 "README.md"
+#line 29 "README.md"
 #include "log.h"
 
-#line 92
+#line 93
 #include <errno.h>
-#line 41
-#include <stdio.h>
-#line 58
-#include <stdlib.h>
-#line 95
-#include <string.h>
 #line 42
+#include <stdio.h>
+#line 59
+#include <stdlib.h>
+#line 96
+#include <string.h>
+#line 43
 
-#line 30
+#line 31
 void log_fatal(const char* message, const char* reason) {
 	if (! message) { message = "NULL"; }
 	if (! reason) { reason = "NULL"; }
-#line 47
+#line 48
 	fprintf(stderr, "%s: %s\n", message, reason);
-#line 63
+#line 64
 	exit(EXIT_FAILURE);
-#line 33
+#line 34
 }
-#line 97
+#line 98
 
 void log_fatal_errno(const char* message) {
 	log_fatal(message, strerror(errno));
