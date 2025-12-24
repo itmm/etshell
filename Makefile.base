@@ -10,6 +10,10 @@ all: .mdp_run
 	@[ -x "$$(command -v mdp)" ] && mdp README.md
 	@date >$@
 
+%.o: %.c
+	@echo cc $@
+	@$(CC) $(CFLAGS) -c $<
+
 sub_test:
 	@$(MAKE) --directory=tests
 
