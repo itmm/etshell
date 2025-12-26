@@ -13,7 +13,8 @@ extern "C" {
 
 int main(int argc, const char* argv[]) {
 	if (argc != 2) { log_fatal("Syntax", "lazy <file path>"); }
-	process_lazy(std::cin, argv[1]);
+	Lazy lazy { std::cin, argv[1] };
+	lazy.process();
 	return 0;
 }
 ```
@@ -26,7 +27,6 @@ Der Header zur Bibliothek in `lazy.h` exportiert eine Klasse mit einer
 #define lazy_h
 
 	#include <cstdint>
-	#include <cstdio>
 	#include <fstream>
 	#include <iostream>
 	#include <string>
@@ -47,8 +47,6 @@ Der Header zur Bibliothek in `lazy.h` exportiert eine Klasse mit einer
 			void process();
 	};
 
-	void process_lazy(std::istream& in, const char* out_path);
-
 #endif
 ```
 
@@ -68,8 +66,8 @@ Lazy::Lazy(std::istream& in, const std::string& out_path):
 	out_ { out_path.c_str(), std::ios_base::in | std::ios_base::out | std::ios_base::binary }
 {
 	try {
-		//in_.exceptions(std::ifstream::failbit);
-		//out_.exceptions(std::ofstream::failbit);
+		//in_.exceptions(in_.exceptions() | std::ifstream::failbit);
+		//out_.exceptions(out_.exceptions() | std::ofstream::failbit);
 	} catch (const std::ios_base::failure& ex) {
 		log_fatal("Kann Lazy nicht initialisieren", ex.what());
 	}
@@ -117,13 +115,6 @@ void Lazy::process() {
 		log_fatal("Lazy Fehler", ex.what());
 	}
 	// trim file length
-}
-
-void process_lazy(std::istream& in, const char* out_path) {
-	if (! out_path) { log_fatal("invalid arguments", "process_lazy"); }
-
-	Lazy lazy { in, out_path };
-	lazy.process();
 }
 ```
 

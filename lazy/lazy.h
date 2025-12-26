@@ -1,9 +1,8 @@
-#line 25 "README.md"
+#line 26 "README.md"
 #if !defined(lazy_h)
 #define lazy_h
 
 	#include <cstdint>
-	#include <cstdio>
 	#include <fstream>
 	#include <iostream>
 	#include <string>
@@ -23,7 +22,5 @@
 			Lazy(std::istream& in, const std::string& out_path);
 			void process();
 	};
-
-	void process_lazy(std::istream& in, const char* out_path);
 
 #endif

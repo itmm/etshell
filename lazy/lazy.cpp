@@ -1,4 +1,4 @@
-#line 58 "README.md"
+#line 56 "README.md"
 #include "lazy.h"
 
 extern "C" {
@@ -12,8 +12,8 @@ Lazy::Lazy(std::istream& in, const std::string& out_path):
 	out_ { out_path.c_str(), std::ios_base::in | std::ios_base::out | std::ios_base::binary }
 {
 	try {
-		//in_.exceptions(std::ifstream::failbit);
-		//out_.exceptions(std::ofstream::failbit);
+		//in_.exceptions(in_.exceptions() | std::ifstream::failbit);
+		out_.exceptions(out_.exceptions() | std::ofstream::failbit);
 	} catch (const std::ios_base::failure& ex) {
 		log_fatal("Kann Lazy nicht initialisieren", ex.what());
 	}
@@ -61,11 +61,4 @@ void Lazy::process() {
 		log_fatal("Lazy Fehler", ex.what());
 	}
 	// trim file length
-}
-
-void process_lazy(std::istream& in, const char* out_path) {
-	if (! out_path) { log_fatal("invalid arguments", "process_lazy"); }
-
-	Lazy lazy { in, out_path };
-	lazy.process();
 }
