@@ -45,9 +45,11 @@ void Lazy::process() {
 	try {
 		if (std::filesystem::exists(out_path_)) {
 			out_.open(out_path_.c_str(), std::ios_base::in | std::ios_base::out | std::ios_base::binary);
+			out_.exceptions(std::ios_base::failbit | std::ios_base::badbit);
 			match_prefix_();
 		} else {
 			out_.open(out_path_.c_str(), std::ios_base::out | std::ios_base::binary);
+			out_.exceptions(std::ios_base::failbit | std::ios_base::badbit);
 			ch_ = in_.get();
 		}
 		overwrite_rest_();
