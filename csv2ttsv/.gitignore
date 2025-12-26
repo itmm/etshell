@@ -1,2 +1,3 @@
 *.o
 csv2ttsv
+.mdp_run

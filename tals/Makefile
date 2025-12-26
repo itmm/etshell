@@ -6,7 +6,7 @@ test: tals
 
 tals: tals.o ../log/liblog.a
 	@echo building $@
-	@$(CC) tals.o -L../log -llog -o $@
+	@$(CXX) tals.o -L../log -llog -o $@
 
 tals.o: ../log/log.h
 

@@ -1,2 +1,3 @@
 *.o
 libcsv.a
+.mdp_run

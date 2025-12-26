@@ -1,4 +1,4 @@
-PROJECTS := log lazy tac tals
+PROJECTS := log lazy tac tals csv ttsv csv2ttsv
 CLEAN_TARGETS := $(addsuffix .clean,$(PROJECTS))
 
 .PHONY: all clean $(PROJECTS) $(CLEAN_TARGETS)

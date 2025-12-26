@@ -1,3 +1,5 @@
+APP := tac
+
 include ../../Makefile.base
 
 TESTS := test_simple test_escaping test_cascading test_empty test_empty_files
@@ -40,8 +42,8 @@ test_empty_files:
 	@diff t e
 	@rm a t e
 
-test: $(TESTS)
-	@echo tested tac
+test: test_prefix $(TESTS)
+	@echo ok
 
 clean:
 	@rm -f t e

@@ -6,7 +6,7 @@
 static void write_ch(int ch, FILE* out) {
     if (! out) { log_fatal("null pointer", "write_ch"); }
     if (fputc(ch, out) == EOF) {
-        log_fatal_errno("Fehler beim Schreiben");
+        log_fatal("Fehler beim Schreiben", "");
     }
 }
 

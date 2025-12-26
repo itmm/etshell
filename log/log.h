@@ -2,9 +2,8 @@
 #if !defined(log_h)
 #define log_h
 
+	class terminate_exception { };
+
 	void log_fatal(const char* message, const char* reason);
-#line 86
-	void log_fatal_errno(const char* message);
-#line 22
 
 #endif

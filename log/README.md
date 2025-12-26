@@ -14,9 +14,11 @@ Das Bauen des Programms ist in [build.md](build.md) beschrieben.
 Im Header `log.h` wird zunächst die Basisfunktion definiert, um eine einzige
 Nachricht zu loggen und das Programm zu beenden:
 
-```c
+```c++
 #if !defined(log_h)
 #define log_h
+
+	class terminate_exception { };
 
 	void log_fatal(const char* message, const char* reason);
 
@@ -24,10 +26,10 @@ Nachricht zu loggen und das Programm zu beenden:
 ```
 
 Eine Log-Nachricht besteht aus der eigentlichen Nachricht und einem Grund.
-Fangen wir mit der Implementierung in `log.c` an. Beide Parameter können leer
+Fangen wir mit der Implementierung in `log.cpp` an. Beide Parameter können leer
 bleiben, um die Funktion robuster zu machen:
 
-```c
+```c++
 #include "log.h"
 
 void log_fatal(const char* message, const char* reason) {
@@ -38,16 +40,16 @@ void log_fatal(const char* message, const char* reason) {
 
 Die Ausgabe erfolgt erst einmal ganz einfach über den Fehler-Kanal:
 
-```c
+```c++
 // ...
 
-#include <stdio.h>
+#include <iostream>
 
 // ...
 void log_fatal(const char* message, const char* reason) {
 	// ...
 	if (! reason) { reason = "NULL"; }
-	fprintf(stderr, "%s: %s\n", message, reason);
+	std::cerr << message << ": " << reason << "\n";
 // ...
 }
 // ...
@@ -57,13 +59,10 @@ Zusätzlich wird nach der Ausgabe das Programm beendet:
 
 ```c
 // ...
-#include <stdio.h>
-#include <stdlib.h>
-// ...
 void log_fatal(const char* message, const char* reason) {
 	// ...
 	fprintf(stderr, "%s: %s\n", message, reason);
-	exit(EXIT_FAILURE);
+	throw terminate_exception { };
 // ...
 }
 // ...
@@ -71,34 +70,3 @@ void log_fatal(const char* message, const char* reason) {
 
 Damit ist ein rudimentäres Logging umgesetzt.
 
-
-## Systemfehler loggen
-
-Oft liefern Systemfunktionen bei einem Fehler eine spezifische Fehlernummer
-in der globalen Variable `errno`. Diese kann für die Angabe eines Grundes
-herangezogen werden.
-
-Daher kommt eine weitere Funktion in `log.h` hinzu:
-
-```c
-// ...
-	void log_fatal(const char* message, const char* reason);
-	void log_fatal_errno(const char* message);
-// ...
-```
-
-In `log.c` kann diese hinzugezogen werden, um die Begründung zu liefern.
-
-```c
-// ...
-
-#include <errno.h>
-// ...
-#include <stdlib.h>
-#include <string.h>
-// ...2
-
-void log_fatal_errno(const char* message) {
-	log_fatal(message, strerror(errno));
-}
-```

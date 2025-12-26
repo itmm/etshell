@@ -1,4 +1,4 @@
-#line 26 "README.md"
+#line 28 "README.md"
 #if !defined(lazy_h)
 #define lazy_h
 

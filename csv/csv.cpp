@@ -17,7 +17,7 @@ static void get_next_ch(struct Csv_State* state) {
     state->next = fgetc(state->in);
     if (state->next == EOF) {
         if (ferror(state->in)) {
-            log_fatal_errno("Fehler beim Lesen");
+            log_fatal("Fehler beim Lesen", "");
         }
     }
 }
@@ -81,7 +81,7 @@ void eat_csv_line(struct Csv_State* state) {
 }
 
 struct Csv_State* alloc_csv_state(FILE* in) {
-    struct Csv_State* state = malloc(sizeof(struct Csv_State));
+    struct Csv_State* state = (struct Csv_State*) malloc(sizeof(struct Csv_State));
     if (! state) { log_fatal("Speichermangel", "Kann Status nicht anlegen"); }
     state->in = in;
     state->next = ' ';

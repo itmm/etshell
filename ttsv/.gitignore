@@ -1,2 +1,3 @@
 *.o
 libttsv.a
+.mdp_run

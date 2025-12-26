@@ -6,7 +6,7 @@ test: tac
 
 tac: tac.o ../log/liblog.a
 	@echo building $@
-	@$(CC) tac.o -L../log -llog -o $@
+	@$(CXX) tac.o -L../log -llog -o $@
 
 tac.o: ../log/log.h
 

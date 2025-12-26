@@ -1,9 +1,6 @@
-#line 56 "README.md"
+#line 58 "README.md"
 #include "lazy.h"
-
-extern "C" {
-	#include "log/log.h"
-}
+#include "log/log.h"
 
 #include <filesystem>
 
