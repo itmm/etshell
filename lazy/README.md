@@ -5,7 +5,7 @@ Die Bau-Umgebung ist in [build.md](build.md) beschrieben.
 Die eigentliche Funktionalität ist in eine Bibliothek gepackt. Das eigentliche
 Programm in `main.cpp` wird dadurch sehr übersichtlich:
 
-```c
+```c++
 #include "lazy.h"
 extern "C" {
 	#include "log/log.h"
@@ -52,7 +52,7 @@ Der Header zur Bibliothek in `lazy.h` exportiert eine Klasse mit einer
 
 Aber dahinter verbergen sich in `lazy.cpp` mehrere Schritte:
 
-```c
+```c++
 #include "lazy.h"
 
 extern "C" {
@@ -62,21 +62,13 @@ extern "C" {
 #include <filesystem>
 
 Lazy::Lazy(std::istream& in, const std::string& out_path):
-	in_ { in }, out_path_ { out_path },
-	out_ { out_path.c_str(), std::ios_base::in | std::ios_base::out | std::ios_base::binary }
-{
-	try {
-		//in_.exceptions(in_.exceptions() | std::ifstream::failbit);
-		//out_.exceptions(out_.exceptions() | std::ofstream::failbit);
-	} catch (const std::ios_base::failure& ex) {
-		log_fatal("Kann Lazy nicht initialisieren", ex.what());
-	}
-}
+	in_ { in }, out_path_ { out_path }, out_ { }
+{ }
 
 void Lazy::match_prefix_() {
 	for (;;) {
 		ch_ = in_.get();
-		if (in_.eof()) { break; }
+		if (! in_) { break; }
 		int should = out_.get();
 		if (should != ch_) { break; }
 		++offset_;
@@ -86,7 +78,7 @@ void Lazy::match_prefix_() {
 void Lazy::overwrite_rest_() {
 	out_.seekp(offset_);
 	for (;;) {
-		if (in_.eof()) { break; }
+		if (! in_) { break; }
 		out_.put(ch_);
 		++offset_;
 		ch_ = in_.get();
@@ -108,7 +100,13 @@ void Lazy::truncate_file_() {
 
 void Lazy::process() {
 	try {
-		match_prefix_();
+		if (std::filesystem::exists(out_path_)) {
+			out_.open(out_path_.c_str(), std::ios_base::in | std::ios_base::out | std::ios_base::binary);
+			match_prefix_();
+		} else {
+			out_.open(out_path_.c_str(), std::ios_base::out | std::ios_base::binary);
+			ch_ = in_.get();
+		}
 		overwrite_rest_();
 		truncate_file_();
 	} catch (const std::ios_base::failure& ex) {
