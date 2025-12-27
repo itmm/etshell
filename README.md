@@ -1,4 +1,4 @@
-# rtshell
+# etshell
 
 Dieses Projekt stellt einfache Werkzeuge vor, um im Linux- oder Mac-Terminal
 textuelle Daten gut zu verarbeiten. Aus diesen Werkzeugen können mithilfe von
