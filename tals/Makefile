@@ -1,14 +1,15 @@
 include ../Makefile.base
 include ../log/Makefile.lib
+include ../ta/Makefile.lib
 
 test: tals
 	@#$(MAKE) sub_test
 
-tals: tals.o ../log/liblog.a
+tals: tals.o ../ta/libta.a ../log/liblog.a
 	@echo building $@
-	@$(CXX) tals.o -L../log -llog -o $@
+	@$(CXX) tals.o -L../ta -lta -L../log -llog -o $@
 
-tals.o: ../log/log.h
+tals.o: ../log/log.h ../ta/ta.h
 
 clean:
 	@rm -f tals tals.o

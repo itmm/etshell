@@ -1,0 +1,4 @@
+../ta/libta.a: ../ta/ta.o
+	@$(MAKE) --directory=../ta libta.a
+
+../ta/ta.o: ../ta/ta.h ../log/log.h

@@ -1,0 +1,3 @@
+*.o
+libta.a
+.mdp_run
