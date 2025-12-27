@@ -6,6 +6,7 @@ include Makefile.deps
 	@$(AR) -rc $@ $^
 
 test: ../log/liblog.a
+	@echo >/dev/null
 
 clean:
 	@rm -f liblog.a log.o
