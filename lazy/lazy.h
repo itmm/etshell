@@ -2,8 +2,9 @@
 #if !defined(lazy_h)
 #define lazy_h
 
-#line 133
+#line 197
 	#include <cstdint>
+#line 137
 	#include <fstream>
 #line 31
 	#include <iostream>
@@ -13,10 +14,11 @@
 #line 111
 			std::istream& in_;
 			const std::string out_path_;
-#line 139
+#line 142
 			std::fstream out_;
+#line 202
 			int ch_ { ' ' };
-			std::uintmax_t offset_ { 0 };
+			std::uintmax_t written_ { 0 };
 #line 113
 
 #line 53

@@ -125,26 +125,36 @@ Lazy::Lazy(std::istream& in, const std::string& out_path)
 // ...
 ```
 
-In `lazy.h`:
+
+## Datei öffnen
+
+Die offene Datei wird als Attribut in `lazy.h` aufgenommen:
+
 
 ```c++
 // ...
 
-	#include <cstdint>
 	#include <fstream>
 // ...
 	class Lazy {
 			// ...
 			const std::string out_path_;
 			std::fstream out_;
-			int ch_ { ' ' };
-			std::uintmax_t offset_ { 0 };
 // ...
 	};
 // ...
 ```
 
-Aber dahinter verbergen sich in `lazy.cpp` mehrere Schritte:
+Leider ist das Öffnen einer Datei in C++ nicht ganz so trivial, wie es sein
+könnte: Wenn eine Datei zum Lesen, oder zum Lesen und Schreiben geöffnet wird,
+so muss sie vorher existieren. Lediglich eine Datei, die nur zum Schreiben
+geöffnet wird, wird erzeugt, wenn sie noch nicht vorhanden ist.
+
+Daher wird die Datei nur zum Schreiben geöffnet, wenn sie noch nicht existiert.
+Der Rückgabewert der Methode `open_file_` in `lazy.cpp` gibt an, ob die Datei
+bereits existiert hat. Nur in diesem Fall darf der Vergleich mit dem
+bestehenden Inhalt stattfinden, da im anderen Fall nicht aus der Datei gelesen
+werden darf:
 
 ```c++
 // ...
@@ -153,21 +163,53 @@ Aber dahinter verbergen sich in `lazy.cpp` mehrere Schritte:
 
 // ...
 bool Lazy::open_file_() {
-	if (std::filesystem::exists(out_path_)) {
-		out_.open(out_path_.c_str(), std::ios_base::in | std::ios_base::out | std::ios_base::binary);
-		out_.exceptions(std::ios_base::failbit | std::ios_base::badbit);
-		return true;
+	bool exists { std::filesystem::exists(out_path_) };
+	if (exists) {
+		out_.open(out_path_.c_str(),
+			std::ios_base::in | std::ios_base::out | std::ios_base::binary
+		);
 	} else {
 		out_.open(out_path_.c_str(), std::ios_base::out | std::ios_base::binary);
-		out_.exceptions(std::ios_base::failbit | std::ios_base::badbit);
-		return false;
 	}
+	out_.exceptions(std::ios_base::failbit | std::ios_base::badbit);
+	return exists;
 	#if 0
 // ...
 	return false;
 	#endif
 // ...
 }
+// ...
+```
+
+Zusätzlich werden Exceptions aktiviert, damit wir nicht bei jedem Leseversuch
+auf Fehler prüfen müssen.
+
+
+## Mit bereits existierenden Daten vergleichen
+
+Ich merke mir in den Attributen in `lazy.h` das gerade gelesene Zeichen und
+wie viele Zeichen bereits geschrieben wurden:
+
+```c++
+// ...
+
+	#include <cstdint>
+// ...
+	class Lazy {
+			// ...
+			std::fstream out_;
+			int ch_ { ' ' };
+			std::uintmax_t written_ { 0 };
+// ...
+	};
+// ...
+```
+
+In `lazy.cpp` implementiere ich die Methode aus, welche das nächste Zeichen
+ermittelt:
+
+```c++
 // ...
 int Lazy::next_ch_() {
 	if (ch_ >= 0) {
@@ -181,33 +223,63 @@ int Lazy::next_ch_() {
 // ...
 }
 // ...
+```
+
+Diese wird von `match_prefix_` verwendet, um die Eingabe mit dem Inhalt der
+Datei zu vergleichen. Solange die Zeichen passen, wird an der Ausgabe-Datei
+nichts verändert und dadurch wird der Änderungszeitstempel nicht angepasst:
+
+```c++
+// ...
 void Lazy::match_prefix_() {
 	for (;;) {
 		ch_ = next_ch_();
 		if (ch_ < 0) { break; }
 		int should = out_.get();
 		if (should != ch_) { break; }
-		++offset_;
+		++written_;
 	}
 // ...
 }
 // ...
+```
+
+
+## Restliche Daten in die Ausgabedatei schreiben
+
+Falls noch weitere Zeichen in der Eingabe vorhanden sind, so überschreiben
+diese die alten Werte. Zu Beginn muss der Schreib-Cursor gesetzt in `lazy.cpp`
+gesetzt werden:
+
+```c++
+// ...
 void Lazy::overwrite_rest_() {
-	out_.seekp(offset_);
+	out_.seekp(written_);
 	for (;;) {
 		if (ch_ < 0) { break; }
 		out_.put(ch_);
-		++offset_;
+		++written_;
 		ch_ = next_ch_();
 	}
 // ...
 }
 // ...
+```
+
+
+## Dateilänge korrigieren
+
+Es kann vorkommen, dass die neue Ausgabe kürzer ist, als die Ausgabedatei
+bereits lang war. Daher muss die Datei zum Schluss `lazy.cpp` noch auf die
+tatsächliche Größe reduziert werden:
+
+```c++
+// ...
 void Lazy::truncate_file_() {
 	out_.close();
 	auto cur { std::filesystem::file_size(out_path_) };
-	if (cur != offset_) {
-		std::filesystem::resize_file(out_path_, offset_);
+	if (cur != written_) {
+		std::filesystem::resize_file(out_path_, written_);
 	}
 // ...
 }
