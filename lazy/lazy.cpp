@@ -1,19 +1,19 @@
-#line 66 "README.md"
+#line 68 "README.md"
 #include "lazy.h"
 #include "log/log.h"
 
-#line 162
+#line 164
 #include <filesystem>
 
-#line 69
+#line 71
 Lazy::Lazy(std::istream& in, const std::string& out_path)
-#line 124
+#line 126
 	: in_ { in }, out_path_ { out_path }
-#line 70
+#line 72
 { }
 
 bool Lazy::open_file_() {
-#line 166
+#line 168
 	bool exists { std::filesystem::exists(out_path_) };
 	if (exists) {
 		out_.open(out_path_.c_str(),
@@ -24,20 +24,20 @@ bool Lazy::open_file_() {
 	}
 	out_.exceptions(std::ios_base::failbit | std::ios_base::badbit);
 	return exists;
-#line 74
+#line 76
 }
 
 int Lazy::next_ch_() {
-#line 215
+#line 217
 	if (ch_ >= 0) {
 		ch_ = in_.get();
 	}
 	return ch_;
-#line 78
+#line 80
 }
 
 void Lazy::match_prefix_() {
-#line 235
+#line 237
 	for (;;) {
 		ch_ = next_ch_();
 		if (ch_ < 0) { break; }
@@ -45,11 +45,11 @@ void Lazy::match_prefix_() {
 		if (should != ch_) { break; }
 		++written_;
 	}
-#line 81
+#line 83
 }
 
 void Lazy::overwrite_rest_() {
-#line 257
+#line 259
 	out_.seekp(written_);
 	for (;;) {
 		if (ch_ < 0) { break; }
@@ -57,17 +57,17 @@ void Lazy::overwrite_rest_() {
 		++written_;
 		ch_ = next_ch_();
 	}
-#line 84
+#line 86
 }
 
 void Lazy::truncate_file_() {
-#line 279
+#line 281
 	out_.close();
 	auto cur { std::filesystem::file_size(out_path_) };
 	if (cur != written_) {
 		std::filesystem::resize_file(out_path_, written_);
 	}
-#line 87
+#line 89
 }
 
 void Lazy::operator()() {

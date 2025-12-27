@@ -1,5 +1,7 @@
 # lazy Schreiben in Dateien
 
+Die Test für `lazy` befinden sich im Ordner [tests](tests/).
+
 Die Bau-Umgebung ist in [build.md](build.md) beschrieben.
 
 Die eigentliche Funktionalität ist in eine Bibliothek gepackt. Das eigentliche
