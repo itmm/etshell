@@ -49,18 +49,16 @@ namespace ta {
 		return result;
 	}
 
-	void Writer::put_ch(int ch) {
-		if (ch < 0) { return; }
-		if (ch == '%' && last_ == '\n') { out_.put(ch); }
-		out_.put(ch);
+	int ostream::overflow(int ch) {
+		if (ch == '%' && last_ == '\n') { forward_.put(ch); }
+		forward_.put(ch);
 		last_ = ch;
+		return 0;
 	}
 
-	void Writer::open_next_file(const std::string& name) {
+	void ostream::open_next_file(const std::string& name) {
 		static const std::string command { "%file " };
-		if (last_ != '\n') { put_ch('\n'); }
-		out_.write(command.c_str(), command.size());
-		out_.write(name.c_str(), name.size());
-		put_ch('\n');
+		if (last_ != '\n') { this->put('\n'); }
+		forward_ << command << name << '\n';
 	}
 }

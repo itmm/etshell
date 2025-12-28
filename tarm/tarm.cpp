@@ -8,7 +8,7 @@ int main(int argc, const char* argv[]) {
 	try {
 		int result_code = EXIT_FAILURE;
 		ta::Reader reader { std::cin };
-		ta::Writer writer { std::cout };
+		ta::ostream out { std::cout };
 		std::string name;
 		while (reader.open_next_file(name)) {
 			bool should_delete { false };
@@ -21,8 +21,8 @@ int main(int argc, const char* argv[]) {
 				while ((ch = reader.next_ch()) >= 0) { }
 				result_code = EXIT_SUCCESS;
 			} else {
-				writer.open_next_file(name);
-				while ((ch = reader.next_ch()) >= 0) { writer.put_ch(ch); }
+				out.open_next_file(name);
+				while ((ch = reader.next_ch()) >= 0) { out.put(ch); }
 			}
 		}
 		return result_code;
