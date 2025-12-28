@@ -31,6 +31,6 @@ namespace md5 {
 			{ init(); }
 
 			void finish(unsigned char digest[16]);
-			void finish(std::string& digest);
+			std::string finish();
 	};
 }

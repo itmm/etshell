@@ -7,8 +7,7 @@ static void test_md5(const std::string& source, const std::string& expected) {
 	std::ostringstream out;
 	md5::ostream stream { out };
 	stream << source;
-	std::string digest;
-	stream.finish(digest);
+	std::string digest { stream.finish() };
 	if (source != out.str()) {
 		log_fatal(source.c_str(), out.str().c_str());
 	}

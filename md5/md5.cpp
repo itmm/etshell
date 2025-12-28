@@ -214,14 +214,15 @@ namespace md5 {
 		init();
 	}
 
-	void ostream::finish(std::string& digest) {
+	std::string ostream::finish() {
 		static const char digits[] = "0123456789abcdef";
 		unsigned char raw[16];
 		finish(raw);
-		digest.clear();
+		std::string digest;
 		for (int i = 0; i < 16; ++i) {
 			digest += digits[(raw[i] >> 4) & 0xf];
 			digest += digits[raw[i] & 0xf];
 		}
+		return digest;
 	}
 }
