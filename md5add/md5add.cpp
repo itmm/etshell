@@ -6,7 +6,7 @@ int main() {
 	bool last_was_nl { true };
 	int ch;
 	while ((ch = std::cin.get()) >= 0) {
-		if (ch == '%' && last_was_nl) { out.put(ch); }
+		if (ch == '%' && last_was_nl) { std::cout.put(ch); }
 		out.put(ch);
 		last_was_nl = (ch == '\n');
 	}
