@@ -1,4 +1,4 @@
-PROJECTS := log lazy tac ta tals tacat tarm csv ttsv csv2ttsv
+PROJECTS := log lazy tac ta tals tacat tarm csv ttsv csv2ttsv md5
 
 CLEAN_TARGETS := $(addsuffix .clean,$(PROJECTS))
 
