@@ -1,15 +1,19 @@
 include ../Makefile.base
-include Makefile.lib
+include ../log/Makefile.lib
+include Makefile.deps
 
 lib: libcsv.a
 
-libcsv.a: csv.o
+../csv/libcsv.a: ../csv/csv.o
 	@echo building $@
 	@$(AR) -rc $@ $^
 
-test: libcsv.a
-	@#$(MAKE) sub_test
+t_csv: ../csv/libcsv.a ../log/liblog.a
+
+test: t_csv
+	@echo "testing csv ... \c";
+	@./t_csv
+	@echo "ok"
 
 clean:
 	@rm -f libcsv.a csv.o
-	@#$(MAKE) sub_test_clean

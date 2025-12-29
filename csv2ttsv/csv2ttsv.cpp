@@ -4,16 +4,17 @@
 #include "ttsv/ttsv.h"
 
 int main(void) {
-	csv::Reader reader { std::cin };
+	csv::istream in { std::cin };
 	ttsv::ostream out { std::cout };
 
-	std::string value;
 	for (;;) {
-		while (reader.read_next_cell_in_line(value)) {
-			out << value; out.close_cell();
-		}
+		int ch;
+		while ((ch = in.get()) >= 0) { out.put(ch); }
+		out.close_cell();
+		if (in.next_cell()) { continue; }
 		out.close_line();
-		if (! reader.goto_next_line()) { break; }
+		if (in.next_line()) { continue; }
+		break;
 	}
 	return EXIT_SUCCESS;
 }

@@ -1,13 +1,11 @@
 include ../Makefile.base
-include Makefile.lib
+include Makefile.deps
 
-lib: libta.a
-
-libta.a: ta.o
+../ta/libta.a: ta.o
 	@echo building $@
 	@$(AR) -rc $@ $^
 
-test: libta.a
+test: ../ta/libta.a
 	@#$(MAKE) sub_test
 
 clean:

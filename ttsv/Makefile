@@ -1,13 +1,11 @@
 include ../Makefile.base
-include Makefile.lib
+include Makefile.deps
 
-libttsv.a: ttsv.o
+../ttsv/libttsv.a: ../ttsv/ttsv.o
 	@echo building $@
 	@$(AR) -rc $@ $^
 
-ttsv.o: ../ttsv/ttsv.h
-
-test: libttsv.a
+test: ../ttsv/libttsv.a
 	@#$(MAKE) sub_test
 
 clean:
