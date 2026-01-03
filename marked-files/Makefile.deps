@@ -1,0 +1,2 @@
+../marked-files/marked-files.h: ../log/log.h
+../marked-files/marked-files.o: ../marked-files/marked-files.h
