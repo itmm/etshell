@@ -1,7 +1,7 @@
 include ../Makefile.base
 include Makefile.deps
 
-../ta/libta.a: ta.o
+../ta/libta.a: ../ta/ta.o
 	@echo building $@
 	@$(AR) -rc $@ $^
 

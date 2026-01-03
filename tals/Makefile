@@ -9,7 +9,7 @@ tals: tals.o ../ta/libta.a ../log/liblog.a
 	@echo building $@
 	@$(CXX) tals.o -L../ta -lta -L../log -llog -o $@
 
-tals.o: ../log/log.h ../ta/ta.h
+tals.o: ../ta/ta.h
 
 clean:
 	@rm -f tals tals.o

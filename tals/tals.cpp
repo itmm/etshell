@@ -1,17 +1,16 @@
-#include <iostream>
 #include <cstdint>
 
-#include "log/log.h"
 #include "ta/ta.h"
 
 int main(void) {
 	try {
-		ta::Reader reader { std::cin };
+		ta::istream in { std::cin };
 		std::string name;
-		while (reader.open_next_file(name)) {
-			std::cout << name << ' ';
+		while (auto name = in.open_next_file()) {
+			std::cout << *name << ' ';
 			uintmax_t size { 0 };
-			while (reader.next_ch() >= 0) { ++size; }
+			char ch;
+			while (in.get(ch)) { ++size; }
 			std::cout << size << '\n';
 		}
 		return EXIT_SUCCESS;

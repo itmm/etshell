@@ -1,1 +1,2 @@
-../ta/ta.o: ../ta/ta.h ../log/log.h
+../ta/ta.h: ../log/log.h
+../ta/ta.o: ../ta/ta.h
