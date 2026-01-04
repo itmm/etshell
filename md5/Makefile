@@ -1,10 +1,6 @@
 include ../Makefile.base
 include Makefile.lib
 
-libmd5.a: md5.o
-	@echo building $@
-	@$(AR) -rc $@ $^
-
 t_md5.o: ../md5/md5.h
 
 t_md5: t_md5.o ../md5/libmd5.a

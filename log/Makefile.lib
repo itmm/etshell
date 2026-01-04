@@ -1,4 +1,5 @@
 ../log/liblog.a: ../log/log.o
-	$(MAKE) --directory=../log liblog.a
+	@echo building $@
+	@$(AR) -rc $@ $^
 
-include ../log/Makefile.deps
+../log/log.o: ../log/log.h

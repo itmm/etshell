@@ -1,10 +1,6 @@
 include ../Makefile.base
 include ../log/Makefile.lib
-include Makefile.deps
-
-../csv/libcsv.a: ../csv/csv.o
-	@echo building $@
-	@$(AR) -rc $@ $^
+include Makefile.lib
 
 t_csv: ../csv/libcsv.a ../log/liblog.a
 

@@ -1,2 +1,0 @@
-../csv/csv.h: ../log/log.h
-../csv/csv.o: ../csv/csv.h

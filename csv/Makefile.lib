@@ -1,5 +1,6 @@
 ../csv/libcsv.a: ../csv/csv.o
-	$(MAKE) --directory=../csv libcsv.a
+	@echo building $@
+	@$(AR) -rc $@ $^
 
-include ../csv/Makefile.deps
-
+../csv/csv.h: ../log/log.h
+../csv/csv.o: ../csv/csv.h

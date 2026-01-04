@@ -1,9 +1,5 @@
 include ../Makefile.base
-include Makefile.deps
-
-../log/liblog.a: ../log/log.o
-	@echo building $@
-	@$(AR) -rc $@ $^
+include Makefile.lib
 
 test: ../log/liblog.a
 	@echo >/dev/null

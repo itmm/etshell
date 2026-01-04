@@ -6,11 +6,7 @@ Im `./Makefile` werden die Grundlagen gelegt, um
 
 ```Makefile
 include ../Makefile.base
-include Makefile.deps
-
-../log/liblog.a: ../log/log.o
-	@echo building $@
-	@$(AR) -rc $@ $^
+include Makefile.lib
 
 test: ../log/liblog.a
 	@echo >/dev/null
@@ -30,7 +26,8 @@ kann die Datei `Makefile.lib` eingebunden werden:
 
 ```Makefile
 ../log/liblog.a: ../log/log.o
-	$(MAKE) --directory=../log liblog.a
+	@echo building $@
+	@$(AR) -rc $@ $^
 
 include ../log/Makefile.deps
 ```

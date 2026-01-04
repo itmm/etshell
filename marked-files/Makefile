@@ -1,9 +1,5 @@
 include ../Makefile.base
-include Makefile.deps
-
-../marked-files/libmarked-files.a: ../marked-files/marked-files.o
-	@echo building $@
-	@$(AR) -rc $@ $^
+include Makefile.lib
 
 test: ../marked-files/libmarked-files.a
 	@#$(MAKE) sub_test
