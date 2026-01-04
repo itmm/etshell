@@ -1,2 +1,0 @@
-../ttsv/ttsv.h: ../log/log.h
-../ttsv/ttsv.o: ../ttsv/ttsv.h

@@ -1,9 +1,5 @@
 include ../Makefile.base
-include Makefile.deps
-
-../ta/libta.a: ../ta/ta.o
-	@echo building $@
-	@$(AR) -rc $@ $^
+include Makefile.lib
 
 test: ../ta/libta.a
 	@#$(MAKE) sub_test

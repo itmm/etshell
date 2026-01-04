@@ -10,7 +10,7 @@ ttsv2csv: ttsv2csv.o ../log/liblog.a ../csv/libcsv.a ../ttsv/libttsv.a
 	@echo building $@
 	@$(CXX) ttsv2csv.o -L../csv -lcsv -L../ttsv -lttsv -L../log -llog -o $@
 
-ttsv2csv.o: ../csv/csv.h ../ttsv/ttsv.h
+ttsv2csv.o: ../csv/csv.h ../ttsv/ttsv.h ../log/log.h
 
 clean:
 	@rm -f ttsv2csv ttsv2csv.o

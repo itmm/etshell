@@ -1,4 +1,6 @@
 ../ttsv/libttsv.a: ../ttsv/ttsv.o
-	@$(MAKE) --directory=../ttsv libttsv.a
+	@echo building $@
+	@$(AR) -rc $@ $^
 
-include ../ttsv/Makefile.deps
+../ttsv/ttsv.h: ../log/log.h
+../ttsv/ttsv.o: ../ttsv/ttsv.h
