@@ -5,8 +5,8 @@
 #include <string>
 
 #include "../log/log.h"
-#include "../marked-files/marked-files.h"
-#include "../marked-files.old/marked-files.h"
+#include "../marked-files-out/marked-files-out.h"
+#include "../marked-files-in/marked-files-in.h"
 
 namespace ta {
 	

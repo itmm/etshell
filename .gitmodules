@@ -1,3 +1,3 @@
 [submodule "ostreams"]
-	path = marked-files
+	path = marked-files-out
 	url = https://github.com/itmm/ostreams.git

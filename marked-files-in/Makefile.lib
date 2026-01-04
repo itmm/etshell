@@ -1,0 +1,6 @@
+../marked-files-in/libmarked-files-in.a: ../marked-files-in/marked-files-in.o
+	@echo building $@
+	@$(AR) -rc $@ $^
+
+../marked-files-in/marked-files-in.h: ../log/log.h
+../marked-files-in/marked-files-in.o: ../marked-files-in/marked-files-in.h

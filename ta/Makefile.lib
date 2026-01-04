@@ -2,5 +2,5 @@
 	@echo building $@
 	@$(AR) -rc $@ $^
 
-../ta/ta.h: ../marked-files/marked-files.h ../marked-files.old/marked-files.h ../log/log.h
+../ta/ta.h: ../marked-files-out/marked-files-out.h ../marked-files-in/marked-files-in.h ../log/log.h
 ../ta/ta.o: ../ta/ta.h
