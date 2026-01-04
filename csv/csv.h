@@ -7,6 +7,7 @@
 namespace csv {
 
 	const char SEPARATOR = ',';
+	const size_t MAX_UNESCAPED_SIZE = 1024;
 
 	template<class CharT, class Traits = std::char_traits<CharT>>
 	class basic_ostream:
@@ -15,24 +16,34 @@ namespace csv {
 	{
 			std::basic_ostream<CharT, Traits>& out_;
 			std::string cell_;
-			bool needs_escape_ { false };
+			bool escaped_ { false };
 
 			Traits::int_type overflow(Traits::int_type ch) override {
 				CharT c { Traits::to_char_type(ch) };
-				if (c == '"') { cell_ += '"'; }
-				cell_ += c;
-				if (c < ' ' || c == '"' || c == SEPARATOR) {
-					needs_escape_ = true;
+				if (! escaped_) {
+					if (
+						cell_.size() >= MAX_UNESCAPED_SIZE ||
+						c < ' ' || c == '"' || c == SEPARATOR
+					) {
+						out_ << '"' << cell_; cell_.clear();
+						escaped_ = true;
+					}
+				}
+				if (! escaped_) {
+					if (c == '"') { cell_ += "\"\""; } else { cell_ += c; }
+				} else {
+					if (c == '"') { out_ << "\"\""; } else { out_.put(c); }
 				}
 				return 0;
 			}
 
 			void finish_cell() {
-				if (needs_escape_) { out_.put('"'); }
-				out_ << cell_;
-				if (needs_escape_) { out_.put('"'); }
-				cell_.clear();
-				needs_escape_ = false;
+				if (escaped_) {
+					out_.put('"');
+				} else {
+					out_ << cell_; cell_.clear();
+					escaped_ = false;
+				}
 			}
 
 		public:

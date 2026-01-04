@@ -32,6 +32,38 @@ void assert_no_next_line(csv::istream& in) {
 	if (in.next_line()) { log_fatal("zu viele Zeilen", ""); }
 }
 
+static inline void simple_write() {
+	std::ostringstream out;
+	csv::ostream writer { out };
+	writer << "a"; writer.close_cell(); writer << "b"; writer.close_line();
+	writer << 1; writer.close_cell(); writer << 2; writer.close_line();
+	assert_eq("a,b\r\n1,2\r\n", out.str());
+}
+
+static inline void quoted_write() {
+	std::ostringstream out;
+	csv::ostream writer { out };
+	writer << "\"1\""; writer.close_line();
+	assert_eq("\"\"\"1\"\"\"\r\n", out.str());
+}
+
+static inline void write_with_newline() {
+	std::ostringstream out;
+	csv::ostream writer { out };
+	writer << "\nx\n"; writer.close_line();
+	assert_eq("\"\nx\n\"\r\n", out.str());
+}
+
+static inline void big_write() {
+	std::ostringstream out;
+	csv::ostream writer { out };
+	std::string value = "1234567890";
+	writer << value;
+	for (int i = 7; i; --i) { writer << value; value += value;} 
+	writer.close_line();
+	assert_eq("\"" + value + "\"\r\n", out.str());
+}
+
 int main() {
 	try {
 		std::istringstream in {
@@ -55,28 +87,10 @@ int main() {
 		assert_no_next_cell(reader);
 		assert_no_next_line(reader);
 
-		{
-			std::ostringstream out;
-			csv::ostream writer { out };
-			writer << "a"; writer.close_cell(); writer << "b"; writer.close_line();
-			writer << 1; writer.close_cell(); writer << 2; writer.close_line();
-			assert_eq("a,b\r\n1,2\r\n", out.str());
-		}
-
-		{
-			std::ostringstream out;
-			csv::ostream writer { out };
-			writer << "\"1\""; writer.close_line();
-			assert_eq("\"\"\"1\"\"\"\r\n", out.str());
-		}
-
-		{
-			std::ostringstream out;
-			csv::ostream writer { out };
-			writer << "\nx\n"; writer.close_line();
-			assert_eq("\"\nx\n\"\r\n", out.str());
-		}
-
+		simple_write();
+		quoted_write();
+		write_with_newline();
+		big_write();
 	} catch (const terminate_exception& ex) {
 		return EXIT_FAILURE;
 	}
