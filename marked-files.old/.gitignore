@@ -1,0 +1,3 @@
+*.o
+libmarked-files-old.a
+.mdp_run

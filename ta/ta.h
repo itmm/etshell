@@ -6,6 +6,7 @@
 
 #include "../log/log.h"
 #include "../marked-files/marked-files.h"
+#include "../marked-files.old/marked-files.h"
 
 namespace ta {
 	
@@ -40,7 +41,7 @@ namespace ta {
 			{ }
 
 			void open_next_file(const std::string& name) {
-				this->send_command("file", name);
+				this->open_command("file"); *this << name; this->close_command();
 			}
 	};
 

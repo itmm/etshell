@@ -11,5 +11,7 @@ int main() {
 		out.put(ch);
 	}
 	auto digest { out.finish() };
-	escaper.send_command("md5-digest", digest);
+	escaper.open_command("md5-digest");
+	escaper << digest;
+	escaper.close_command();
 }

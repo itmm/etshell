@@ -1,0 +1,6 @@
+../marked-files.old/libmarked-files-old.a: ../marked-files.old/marked-files.o
+	@echo building $@
+	@$(AR) -rc $@ $^
+
+../marked-files.old/marked-files.h: ../log/log.h
+../marked-files.old/marked-files.o: ../marked-files.old/marked-files.h
