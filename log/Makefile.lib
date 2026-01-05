@@ -2,4 +2,4 @@
 	@echo building $@
 	@$(AR) -rc $@ $^
 
-../log/log.o: ../log/log.h
+include ../log/Makefile.deps

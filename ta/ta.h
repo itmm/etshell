@@ -34,8 +34,8 @@ namespace ta {
 	template<class CharT, class Traits = std::char_traits<CharT>>
 	class basic_ostream: public marked_files::basic_ostream<CharT, Traits> {
 		public:
-			basic_ostream<CharT, Traits>(
-				std::basic_ostream<CharT, Traits>& forward
+			basic_ostream(
+				std::basic_ostream<CharT, Traits> & forward
 			):
 				marked_files::basic_ostream<CharT, Traits> { forward }
 			{ }
