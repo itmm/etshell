@@ -1,7 +1,7 @@
 include ../Makefile.base
 include Makefile.lib
 
-test: liblog.a
+test: $(LIBS)
     # done
 
 clean:

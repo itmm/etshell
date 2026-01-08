@@ -1,8 +1,10 @@
-vpath lazy.% ../lazy
-vpath liblazy.a ../lazy
+DIR := ../lazy
+LIB := $(DIR)/liblazy.a
 
-liblazy.a: lazy.o
+vpath lazy.% $(DIR)
 
-include lazy.d
+$(LIB): $(LIB)(lazy.o)
 
-LIBS += liblazy.a
+include $(DIR)/lazy.d
+
+LIBS += $(LIB)

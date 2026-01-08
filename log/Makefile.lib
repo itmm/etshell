@@ -1,8 +1,10 @@
-vpath log.% ../log
-vpath liblog.a ../log
+DIR := ../log
+LIB := $(DIR)/liblog.a
 
-liblog.a: log.o
+vpath log.% $(DIR)
 
-include ../log/log.d
+$(LIB): $(LIB)(log.o)
 
-LIBS += liblog.a
+include $(DIR)/log.d
+
+LIBS += $(LIB)

@@ -1,8 +1,10 @@
-vpath csv.% ../csv
-vpath libcsv.a ../csv
+DIR := ../csv
+LIB := $(DIR)/libcsv.a
 
-libcsv.a: csv.o
+vpath csv.% $(DIR)
 
-include ../csv/csv.d
+$(LIB): $(LIB)(csv.o)
 
-LIBS += libcsv.a
+include $(DIR)/csv.d
+
+LIBS += $(LIB)

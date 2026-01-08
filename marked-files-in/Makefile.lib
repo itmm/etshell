@@ -1,8 +1,10 @@
-vpath marked-files-in.% ../marked-files-in
-vpath libmarked-files-in.a ../marked-files-in
+DIR := ../marked-files-in
+LIB := $(DIR)/libmarked-files-in.a
 
-libmarked-files-in.a: marked-files-in.o
+vpath marked-files-in.% $(DIR)
 
-include ../marked-files-in/marked-files-in.d
+$(LIB): $(LIB)(marked-files-in.o)
 
-LIBS += libmarked-files-in.a
+include $(DIR)/marked-files-in.d
+
+LIBS += $(LIB)

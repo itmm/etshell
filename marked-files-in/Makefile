@@ -2,7 +2,7 @@ include ../Makefile.base
 include ../log/Makefile.lib
 include Makefile.lib
 
-test: libmarked-files-in.a
+test: $(LIBS)
 	# done
 
 clean:

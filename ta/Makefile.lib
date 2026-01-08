@@ -1,8 +1,10 @@
-vpath ta.% ../ta
-vpath libta.a ../ta
+DIR := ../ta
+LIB := $(DIR)/libta.a
 
-libta.a: ta.o
+vpath ta.% $(DIR)
 
-include ../ta/ta.d
+$(LIB): $(LIB)(ta.o)
 
-LIBS += libta.a
+include $(DIR)/ta.d
+
+LIBS += $(LIB)

@@ -1,8 +1,10 @@
-vpath md5.% ../md5
-vpath libmd5.a ../md5
+DIR := ../md5
+LIB := $(DIR)/libmd5.a
 
-libmd5.a: md5.o
+vpath md5.% $(DIR)
 
-include ../md5/md5.d
+$(LIB): $(LIB)(md5.o)
 
-LIBS += libmd5.a
+include $(DIR)/md5.d
+
+LIBS += $(LIB)

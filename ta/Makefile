@@ -4,7 +4,7 @@ include ../marked-files-in/Makefile.lib
 include ../marked-files-out/Makefile.lib
 include Makefile.lib
 
-test: libta.a
+test: $(LIBS)
 	# done
 
 clean:

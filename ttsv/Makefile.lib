@@ -1,8 +1,10 @@
-vpath ttsv.% ../ttsv
-vpath libttsv.a ../ttsv
+DIR := ../ttsv
+LIB := $(DIR)/libttsv.a
 
-libttsv.a: ttsv.o
+vpath ttsv.% $(DIR)
 
-include ../ttsv/ttsv.d
+$(LIB): $(LIB)(ttsv.o)
 
-LIBS += libttsv.a
+include $(DIR)/ttsv.d
+
+LIBS += $(LIB)

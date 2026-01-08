@@ -8,6 +8,7 @@ CLEAN_TARGETS := $(addsuffix .clean,$(PROJECTS))
 all: marked-files-out/Makefile.base $(PROJECTS)
 
 marked-files-out/Makefile.base: Makefile.base
+	chmod a+w $@
 	cp $< $@
 	chmod a-w $@
 
