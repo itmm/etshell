@@ -7,12 +7,7 @@ CLEAN_TARGETS := $(addsuffix .clean,$(PROJECTS))
 
 all: marked-files-out/base.mk marked-files-out/with-mdp.mk $(PROJECTS)
 
-marked-files-out/base.mk: base.mk
-	chmod a+w $@
-	cp $< $@
-	chmod a-w $@
-
-marked-files-out/with-mdp.mk: with-mdp.mk
+marked-files-out/%.mk: %.mk
 	chmod a+w $@
 	cp $< $@
 	chmod a-w $@
