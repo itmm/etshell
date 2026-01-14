@@ -1,0 +1,4 @@
+tasplit
+*.o
+*.d
+.mdp_run
