@@ -7,9 +7,9 @@ leer sein:
 ```Makefile
 APP := lazy
 
-INC_DIR = ../..
+ETSHELL_DIR ?= ../..
 GENERATED = Makefile
-include ../../with-mdp.mk
+include $(ETSHELL_DIR)/with-mdp.mk
 
 TESTS := test_no_output \
 

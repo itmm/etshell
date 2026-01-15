@@ -1,6 +1,7 @@
 APP := tac
 
-include ../../base.mk
+ETSHELL_DIR ?= ../..
+include $(ETSHELL_DIR)/base.mk
 
 TESTS := test_simple test_escaping test_cascading test_empty test_empty_files
 

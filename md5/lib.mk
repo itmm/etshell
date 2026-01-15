@@ -1,4 +1,5 @@
-DIR = ../md5
+ETSHELL_DIR ?= ..
+DIR = $(ETSHELL_DIR)/md5
 LIB = libmd5.a
 FULL_LIB = $(DIR)/$(LIB)
 

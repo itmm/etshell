@@ -1,7 +1,8 @@
-include ../base.mk
-include ../log/lib.mk
-include ../marked-files-in/lib.mk
-include ../marked-files-out/lib.mk
+ETSHELL_DIR ?= ..
+include $(ETSHELL_DIR)/base.mk
+include $(ETSHELL_DIR)/log/lib.mk
+include $(ETSHELL_DIR)/marked-files-in/lib.mk
+include $(ETSHELL_DIR)/marked-files-out/lib.mk
 include lib.mk
 
 include ta.d

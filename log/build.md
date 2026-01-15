@@ -7,7 +7,8 @@ Im `./Makefile` werden die Grundlagen gelegt, um
 ```Makefile
 GENERATED = Makefile lib.mk log.h log.cpp
 
-include ../with-mdp.mk
+ETSHELL_DIR ?= ..
+include $(ETSHELL_DIR)/with-mdp.mk
 include lib.mk
 
 test: $(LIB)
@@ -31,7 +32,8 @@ Ich baue eine statische Bibliothek. Um in anderen Makefiles diese zu verwenden,
 kann die Datei `lib.mk` eingebunden werden:
 
 ```Makefile
-DIR = ../log
+ETSHELL_DIR ?= ..
+DIR = $(ETSHELL_DIR)/log
 LIB = liblog.a
 FULL_LIB = $(DIR)/$(LIB)
 

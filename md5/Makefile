@@ -1,5 +1,6 @@
-include ../base.mk
-include ../log/lib.mk
+ETSHELL_DIR ?= ..
+include $(ETSHELL_DIR)/base.mk
+include $(ETSHELL_DIR)/log/lib.mk
 include lib.mk
 
 t_md5: t_md5.o $(LIBS)

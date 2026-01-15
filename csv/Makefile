@@ -1,5 +1,6 @@
-include ../base.mk
-include ../log/lib.mk
+ETSHELL ?= ..
+include $(ETSHELL)/base.mk
+include $(ETSHELL)/log/lib.mk
 include lib.mk
 
 t_csv: t_csv.o $(LIBS)

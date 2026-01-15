@@ -1,4 +1,5 @@
-DIR = ../log
+ETSHELL_DIR ?= ..
+DIR = $(ETSHELL_DIR)/log
 LIB = liblog.a
 FULL_LIB = $(DIR)/$(LIB)
 

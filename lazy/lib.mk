@@ -1,4 +1,4 @@
-DIR = ../lazy
+DIR = $(ETSHELL_DIR)/lazy
 LIB = liblazy.a
 FULL_LIB = $(DIR)/$(LIB)
 

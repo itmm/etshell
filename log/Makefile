@@ -1,6 +1,7 @@
 GENERATED = Makefile lib.mk log.h log.cpp
 
-include ../with-mdp.mk
+ETSHELL_DIR ?= ..
+include $(ETSHELL_DIR)/with-mdp.mk
 include lib.mk
 
 test: $(LIB)

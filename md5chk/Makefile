@@ -1,7 +1,8 @@
-include ../base.mk
-include ../md5/lib.mk
-include ../marked-files-in/lib.mk
-include ../log/lib.mk
+ETSHELL_DIR ?= ..
+include $(ETSHELL_DIR)/base.mk
+include $(ETSHELL_DIR)/md5/lib.mk
+include $(ETSHELL_DIR)/marked-files-in/lib.mk
+include $(ETSHELL_DIR)/log/lib.mk
 
 test: md5chk
 	# done

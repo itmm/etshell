@@ -2,8 +2,9 @@ In `./Makefile`:
 
 ```Makefile
 GENERATED := Makefile lib.mk lazy.h lazy.cpp
-include ../with-mdp.mk
-include ../log/lib.mk
+ETSHELL_DIR ?= ..
+include $(ETSHELL_DIR)/with-mdp.mk
+include $(ETSHELL_DIR)/log/lib.mk
 include lib.mk
 
 include main.d
@@ -23,7 +24,7 @@ clean:
 In `lib.mk`:
 
 ```Makefile
-DIR = ../lazy
+DIR = $(ETSHELL_DIR)/lazy
 LIB = liblazy.a
 FULL_LIB = $(DIR)/$(LIB)
 

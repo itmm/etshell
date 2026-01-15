@@ -1,6 +1,7 @@
 GENERATED := Makefile lib.mk lazy.h lazy.cpp
-include ../with-mdp.mk
-include ../log/lib.mk
+ETSHELL_DIR ?= ..
+include $(ETSHELL_DIR)/with-mdp.mk
+include $(ETSHELL_DIR)/log/lib.mk
 include lib.mk
 
 include main.d
