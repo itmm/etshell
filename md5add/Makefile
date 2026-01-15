@@ -13,3 +13,5 @@ include md5add.d
 
 clean:
 	$(RM) md5add md5add.o .mdp_run
+
+dist: $(DIST_DIR)/md5add

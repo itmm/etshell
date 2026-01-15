@@ -16,3 +16,5 @@ test: lazy
 clean:
 	$(RM) lazy liblazy.a lazy.o main.o
 	$(MAKE) sub_test_clean
+
+dist: $(DIST_DIR)/lazy

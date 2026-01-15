@@ -14,3 +14,5 @@ tasplit: tasplit.o $(LIBS)
 
 clean:
 	$(RM) tasplit tasplit.o .mdp_run
+
+dist: $(DIST_DIR)/tasplit

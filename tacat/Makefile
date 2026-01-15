@@ -14,3 +14,5 @@ include tacat.d
 
 clean:
 	$(RM) tacat tacat.o
+
+dist: $(DIST_DIR)/tacat

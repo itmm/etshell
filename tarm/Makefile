@@ -14,3 +14,5 @@ include tarm.d
 
 clean:
 	$(RM) tarm tarm.o
+
+dist: $(DIST_DIR)/tarm

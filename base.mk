@@ -1,8 +1,10 @@
-.PHONY: all test clean sub_test sub_test_clean
+.PHONY: all test clean sub_test sub_test_clean dist
 
 ETSHELL_DIR ?= ..
 CPPFLAGS += -I$(ETSHELL_DIR)
 CXXFLAGS += -std=c++20 -O3 -Wall -pedantic -Werror
+
+DIST_DIR ?= $(HOME)/bin
 
 LIBS :=
 
@@ -18,3 +20,9 @@ sub_test:
 
 sub_test_clean:
 	$(MAKE) -C tests clean
+
+dist:
+	# dist
+
+$(DIST_DIR)/%: %
+	cp $< $@

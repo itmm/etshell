@@ -15,3 +15,6 @@ tac: tac.o $(LIBS)
 clean:
 	$(RM) tac tac.o .mdp_run
 	$(MAKE) sub_test_clean
+
+dist: $(DIST_DIR)/tac
+

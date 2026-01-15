@@ -2,8 +2,9 @@ PROJECTS := log lazy marked-files-in marked-files-out ta tac tals tacat
 PROJECTS += tarm tamv csv ttsv csv2ttsv ttsv2csv md5 md5add md5chk tasplit
 
 CLEAN_TARGETS := $(addsuffix .clean,$(PROJECTS))
+DIST_TARGETS := $(addsuffix .dist,$(PROJECTS))
 
-.PHONY: all clean $(PROJECTS) $(CLEAN_TARGETS)
+.PHONY: all clean dist $(PROJECTS) $(CLEAN_TARGETS)
 
 all: marked-files-out/base.mk marked-files-out/with-mdp.mk $(PROJECTS)
 
@@ -19,5 +20,8 @@ endef
 
 $(foreach prj,$(addsuffix :,$(PROJECTS)),$(eval $(call GEN,$(prj),all)))
 $(foreach cln,$(addsuffix :,$(CLEAN_TARGETS)),$(eval $(call GEN,$(cln),clean)))
+$(foreach dst,$(addsuffix :,$(DIST_TARGETS)),$(eval $(call GEN,$(dst),dist)))
 
 clean: $(CLEAN_TARGETS)
+
+dist: $(DIST_TARGETS)

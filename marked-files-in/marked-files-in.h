@@ -28,7 +28,7 @@ namespace marked_files {
 					in_command_ = false;
 				}
 				this->setg(&ch_, &ch_, &ch_ + 1);
-				return Traits::to_int_type(0);
+				return Traits::to_int_type(ch_);
 			}
 
 		public:

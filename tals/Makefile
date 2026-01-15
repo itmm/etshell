@@ -14,3 +14,5 @@ include tals.d
 
 clean:
 	$(RM) tals tals.o
+
+dist: $(DIST_DIR)/tals

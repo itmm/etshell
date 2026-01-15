@@ -13,3 +13,5 @@ include ttsv2csv.d
 
 clean:
 	$(RM) ttsv2csv ttsv2csv.o
+
+dist: $(DIST_DIR)/ttsv2csv
