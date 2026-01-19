@@ -4,11 +4,14 @@ include $(ETSHELL_DIR)/log/lib.mk
 include lib.mk
 
 include ttsv.d
+include t_ttsv.d
 
-test: $(LIBS)
-	# done
+t_ttsv: $(LIBS)
+
+test: t_ttsv
+	./t_ttsv
 
 $(LIB): $(LIB)(ttsv.o)
 
 clean:
-	$(RM) libttsv.a ttsv.o
+	$(RM) libttsv.a ttsv.o t_ttsv t_ttsv.o
